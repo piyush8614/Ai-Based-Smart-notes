@@ -129,3 +129,42 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// ================= UPDATE NAME =================
+export const updateName = async (req, res) => {
+  try {
+    const { userId, name } = req.body;
+
+    await Usermodel.findByIdAndUpdate(userId, { name });
+
+    res.json({ message: "Name updated successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ================= CHANGE PASSWORD =================
+export const changePassword = async (req, res) => {
+  try {
+    const { userId, oldPassword, newPassword } = req.body;
+
+    const user = await Usermodel.findById(userId);
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Wrong old password" });
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashed;
+    await user.save();
+
+    res.json({ message: "Password changed successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

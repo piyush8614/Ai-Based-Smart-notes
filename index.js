@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/Auth.routes.js";
 import notesRoutes from "./routes/notes.js";
 import NoteRoutes from "./routes/NoteRoutes.js";
+import AiRoutes from "./routes/Ai.routes.js";
+
 dotenv.config();
 
 const app = express();
@@ -18,6 +20,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/notes", NoteRoutes);
+app.use("/api/ai", AiRoutes);
+
+
 
 
 // MongoDB Connection
